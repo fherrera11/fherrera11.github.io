@@ -3,73 +3,91 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Slideshow</title>
+    <title>Automatic Scrolling Slideshow</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        text-align: center;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
 
-      #slideshow {
-        margin: auto;
-        width: 80%;
-        max-width: 600px;
+      .slideshow-container {
         position: relative;
+        width: 80%;
+        max-width: 700px;
+        margin: auto;
+        overflow: hidden;
+        border: 2px solid #ddd;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       }
 
       .slide {
         display: none;
+      }
+
+      img {
         width: 100%;
         height: auto;
       }
 
-      .active {
-        display: block;
+      .fade {
+        animation-name: fade;
+        animation-duration: 1.5s;
       }
 
-      .controls {
-        margin-top: 20px;
-      }
-
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
+      @keyframes fade {
+        from {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Simple Image Slideshow</h1>
-    <div id="slideshow">
-      <img class="slide active" src="image1.jpg" alt="Slide 1" />
-      <img class="slide" src="image2.jpg" alt="Slide 2" />
-      <img class="slide" src="image3.jpg" alt="Slide 3" />
-    </div>
-
-    <div class="controls">
-      <button id="prev">Previous</button>
-      <button id="next">Next</button>
+    <div class="slideshow-container">
+      <div class="slide fade">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/7/73/Mercator_projection_Square.JPG"
+          alt="Slide 1"
+        />
+      </div>
+      <div class="slide fade">
+        <img
+          src="https://imgix.ranker.com/list_img_v2/11987/2131987/original/map-projections-u1?fit=crop&fm=pjpg&q=80&dpr=2&w=1200&h=720"
+          alt="Slide 2"
+        />
+      </div>
+      <div class="slide fade">
+        <img
+          src="https://bok-figures.s3.amazonaws.com/files/figure2-projections.png"
+          alt="Slide 3"
+        />
+      </div>
+      <!-- Add more slides as needed -->
     </div>
 
     <script>
-      let currentIndex = 0;
-      const slides = document.querySelectorAll(".slide");
+      let slideIndex = 0;
+      showSlides();
 
-      document.getElementById("next").addEventListener("click", function () {
-        changeSlide(1);
-      });
-
-      document.getElementById("prev").addEventListener("click", function () {
-        changeSlide(-1);
-      });
-
-      function changeSlide(direction) {
-        slides[currentIndex].classList.remove("active");
-        currentIndex =
-          (currentIndex + direction + slides.length) % slides.length;
-        slides[currentIndex].classList.add("active");
+      function showSlides() {
+        let slides = document.getElementsByClassName("slide");
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {
+          slideIndex = 1;
+        }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 1500); // Change image every 3 seconds
       }
     </script>
   </body>
